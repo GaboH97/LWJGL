@@ -14,6 +14,7 @@ import shaders.StaticShader;
 import shaders.TerrainShader;
 import terrains.Terrain;
 import textures.ModelTexture;
+import textures.TerrainTexturePack;
 import toolbox.Maths;
 
 /**
@@ -46,10 +47,27 @@ public class TerrainRenderer {
         GL20.glEnableVertexAttribArray(0); //Access to vertex positions
         GL20.glEnableVertexAttribArray(1); //Access to texture coords
         GL20.glEnableVertexAttribArray(2); //Access to normals
-        ModelTexture modelTexture = terrainModel.getTexture();
-        shader.loadSpecularLightAttributes(modelTexture.getShineDamping(), modelTexture.getReflectivity());
+        //ModelTexture modelTexture = terrainModel.getTexture();
+        //shader.loadSpecularLightAttributes(modelTexture.getShineDamping(), modelTexture.getReflectivity());
+       // GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        //GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrainModel.getTexture().getTextureID());
+    }
+    
+    /**
+     * Bind Terrain Pack textures all at once given their ID
+     */
+    public void bindTerrainTextures(Terrain terrain){
+        TerrainTexturePack pack = terrain.getTerrainTexturePack();
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrainModel.getTexture().getTextureID());
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, pack.getBackgroundTexture().getTextureID());
+        GL13.glActiveTexture(GL13.GL_TEXTURE1);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, pack.getrTexture().getTextureID());
+        GL13.glActiveTexture(GL13.GL_TEXTURE2);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, pack.getgTexture().getTextureID());
+        GL13.glActiveTexture(GL13.GL_TEXTURE3);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, pack.getbTexture().getTextureID());
+        GL13.glActiveTexture(GL13.GL_TEXTURE3);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrain.getBlendMapTexture().getTextureID());
     }
 
     public void prepareInstance(Terrain terrain) {

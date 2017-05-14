@@ -1,14 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package terrains;
 
 import objectModels.RawModel;
 import render.Loader;
 import shaders.StaticShader;
 import textures.ModelTexture;
+import textures.TerrainTexture;
+import textures.TerrainTexturePack;
 
 /**
  *
@@ -22,10 +20,14 @@ public class Terrain {
     private float x;
     private float z;
     private RawModel model;
-    private ModelTexture texture;
-
-    public Terrain(float x, float z, Loader loader, ModelTexture texture) {
-        this.texture = texture;
+    //private ModelTexture texture;
+    private TerrainTexturePack terrainTexturePack;
+    private TerrainTexture blendMapTexture;
+    
+    
+    public Terrain(float x, float z, Loader loader, TerrainTexturePack terrainTexturePack, TerrainTexture blenderMapTexture) {
+        this.terrainTexturePack = terrainTexturePack;
+        this.blendMapTexture = blenderMapTexture;
         this.x = x * SIZE;
         this.z = z * SIZE;
         this.model  = generateTerrain(loader);
@@ -94,9 +96,23 @@ public class Terrain {
         return model;
     }
 
-    public ModelTexture getTexture() {
-        return texture;
+    public TerrainTexturePack getTerrainTexturePack() {
+        return terrainTexturePack;
     }
+
+    public TerrainTexture getBlendMapTexture() {
+        return blendMapTexture;
+    }
+
+    public void setBlendMapTexture(TerrainTexture blendMapTexture) {
+        this.blendMapTexture = blendMapTexture;
+    }
+
+    public void setTerrainTexturePack(TerrainTexturePack terrainTexturePack) {
+        this.terrainTexturePack = terrainTexturePack;
+    }
+
+    
     
     
 }
