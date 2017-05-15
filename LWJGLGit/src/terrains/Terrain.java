@@ -3,8 +3,6 @@ package terrains;
 
 import objectModels.RawModel;
 import render.Loader;
-import shaders.StaticShader;
-import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 

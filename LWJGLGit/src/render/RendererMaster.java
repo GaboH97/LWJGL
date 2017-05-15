@@ -105,7 +105,7 @@ public class RendererMaster {
         renderer.render(entitiesMap);
         shader.stop();
         terrainShader.start();
-        terrainShader.loadSkyColor(1.0f, 1.0f, 0.2f);
+        terrainShader.loadSkyColor(0.5f, 0.5f, 0.5f);
         terrainShader.loadLightPositionVector(light);
         terrainShader.loadViewMatrix(camera);
         terrainRenderer.render(terrains);

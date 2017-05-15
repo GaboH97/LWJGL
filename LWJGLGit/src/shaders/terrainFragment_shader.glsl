@@ -27,11 +27,17 @@ void main(void){
         vec4 blendMapColor = texture(blendMapTexture,pass_textureCoordinates);
         
         float backTextureAmount = 1 -(blendMapColor.r+blendMapColor.g+blendMapColor.b);
-        vec2 tiledCoords = pass_textures*40.0f;
+        
+        vec2 tiledCoords = pass_textureCoordinates*40.0;
+
+        //Calculate the  amount of every RGB color of each texture
+
         vec4 backgroundTextureColor = texture(backgroundTexture,tiledCoords)* backTextureAmount;
-        vec4 rTextureColor =texture(rTexture,tiledCoords)* blendMapColor.r;
-        vec4 gTextureColor =texture(gTexture,tiledCoords)* blendMapColor.g;
-        vec4 bTextureColor =texture(bTexture,tiledCoords)* blendMapColor.b;
+        vec4 rTextureColor = texture(rTexture,tiledCoords)* blendMapColor.r;
+        vec4 gTextureColor = texture(gTexture,tiledCoords)* blendMapColor.g;
+        vec4 bTextureColor = texture(bTexture,tiledCoords)* blendMapColor.b;
+        
+        //Calculate the final color of the texture as a mix of the RGB components
         vec4 totalColor = backgroundTextureColor +rTextureColor+gTextureColor+bTextureColor;
         
         

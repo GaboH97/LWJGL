@@ -2,7 +2,7 @@
 package textures;
 
 /**
- *
+ * This class will cointain the four textures to render 
  * @author Gabriel Huertas
  */
 public class TerrainTexturePack {

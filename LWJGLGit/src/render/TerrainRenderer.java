@@ -29,6 +29,7 @@ public class TerrainRenderer {
         this.shader = shader;
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);
+        shader.connectUnits();
         shader.stop();
     }
 
@@ -41,8 +42,8 @@ public class TerrainRenderer {
         }
     }
 
-    public void prepareTerrainModel(Terrain terrainModel) {
-        RawModel rawModel = terrainModel.getModel();
+    public void prepareTerrainModel(Terrain terrain) {
+        RawModel rawModel = terrain.getModel();
         GL30.glBindVertexArray(rawModel.getVaoID());
         GL20.glEnableVertexAttribArray(0); //Access to vertex positions
         GL20.glEnableVertexAttribArray(1); //Access to texture coords
@@ -51,6 +52,8 @@ public class TerrainRenderer {
         //shader.loadSpecularLightAttributes(modelTexture.getShineDamping(), modelTexture.getReflectivity());
        // GL13.glActiveTexture(GL13.GL_TEXTURE0);
         //GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrainModel.getTexture().getTextureID());
+        bindTerrainTextures(terrain);
+        shader.loadSpecularLightAttributes(1, 0);
     }
     
     /**
@@ -66,7 +69,7 @@ public class TerrainRenderer {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, pack.getgTexture().getTextureID());
         GL13.glActiveTexture(GL13.GL_TEXTURE3);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, pack.getbTexture().getTextureID());
-        GL13.glActiveTexture(GL13.GL_TEXTURE3);
+        GL13.glActiveTexture(GL13.GL_TEXTURE4);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrain.getBlendMapTexture().getTextureID());
     }
 
