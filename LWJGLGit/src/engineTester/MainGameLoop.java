@@ -1,6 +1,5 @@
 package engineTester;
 
-import com.sun.javafx.tk.quantum.MasterTimer;
 import objectModels.RawModel;
 import objectModels.TexturedModel;
 
@@ -13,6 +12,7 @@ import textures.ModelTexture;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import entities.Player;
 import java.io.File;
 import java.util.ArrayList;
 import render.OBJLoader;
@@ -28,11 +28,12 @@ public class MainGameLoop {
         System.setProperty("org.lwjgl.librarypath", new File("./src/natives").getAbsolutePath());
 
         DisplayManager.createDisplay();
+
         Loader loader = new Loader();
 
         /* SET UP TERRAIN */
         TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("mud"));
-        TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("mud"));
+        TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("grassy2"));
         TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("grassFlowers"));
         TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
 
@@ -40,20 +41,17 @@ public class MainGameLoop {
         TerrainTexturePack terrainTexturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
 
         TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
-
         RendererMaster rendererMaster = new RendererMaster();
 
         ArrayList<Entity> entities = new ArrayList<>();
-
         RawModel model = OBJLoader.loadObjModel("footballobj", loader);
-
         TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("football"), 10, 0.3f));
 
         for (int i = 0; i < 300; i++) {
             entities.add(new Entity(staticModel, new Vector3f((float) ((Math.random() * (200 - (-100))) + (-100)), (float) (Math.random() * 70), (float) (-Math.random() * 100)), 0, 0, 0, 1, (float) ((Math.random() * (0.7 - 0.5)) + 0.5)));
         }
 
-        Camera camera = new Camera();
+       
         /**
          * Position of the light, color of the light
          */
@@ -62,11 +60,22 @@ public class MainGameLoop {
         Terrain terrain = new Terrain(0, -1f, loader, terrainTexturePack, blendMap);
         Terrain terrain2 = new Terrain(-1f, -1f, loader, terrainTexturePack, blendMap);
 
-        float dt = (float) (1 / DisplayManager.FPS_CAP);
+        /**
+         * Create player
+         */
+        RawModel playerModel = OBJLoader.loadObjModel("dragon", loader);
 
+        TexturedModel texturedPlayerModel = new TexturedModel(playerModel, new ModelTexture(loader.loadTexture("white"), 0, 0.3f));
+
+        Player player = new Player(texturedPlayerModel, new Vector3f(20, 0, -50), 0, 0, 0, 1, 1);
+        
+        Camera camera = new Camera(player);
+        
         while (!Display.isCloseRequested()) {
             camera.move();
+            player.movePlayer();
             light.move();
+            rendererMaster.processEntity(player);
             rendererMaster.processTerrain(terrain);
             rendererMaster.processTerrain(terrain2);
             for (Entity entity : entities) {
